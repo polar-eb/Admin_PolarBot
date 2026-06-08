@@ -190,3 +190,9 @@ async function run() {
 }
 
 run();
+
+const http = require("http");
+http.createServer((req, res) => {
+  res.write("Bot online!");
+  res.end();
+}).listen(3000);
