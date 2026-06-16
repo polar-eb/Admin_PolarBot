@@ -239,18 +239,44 @@ app.get("/login", (req, res) => {
   }
 
   res.send(`
-    <html>
-      <head>
-        <title>Painel do EB</title>
-      </head>
-      <body style="font-family: Arial; text-align:center; margin-top:50px;">
-        <h1>🪖 Painel do EB</h1>
-        <p>Login realizado com sucesso! ✅</p>
-      </body>
-    </html>
-  `);
-});
+<html>
+<head>
+<title>Painel do EB</title>
+</head>
 
+<body style="font-family: Arial; text-align:center; margin-top:50px;">
+
+<h1>🪖 Sistema de Eventos EB</h1>
+
+<form>
+  <p>Jogador:</p>
+
+  <input
+    type="text"
+    placeholder="Digite o nome do jogador"
+    style="padding:10px;"
+  >
+
+  <br><br>
+
+  <button type="submit">Enviar</button>
+</form>
+
+<hr style="width:50%;">
+
+<h2>📋 Histórico de Eventos</h2>
+
+<p>Nenhum evento registrado.</p>
+
+<hr style="width:50%;">
+
+<h3>🤖 Status</h3>
+<p>Bot Online ✅</p>
+
+</body>
+</html>
+`);
+  
 app.listen(process.env.PORT || 3000, () => {
   console.log("Painel online!");
 });
