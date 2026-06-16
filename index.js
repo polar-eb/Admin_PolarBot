@@ -181,6 +181,7 @@ if (soldadoRole) {
   await setUserRank(req.requester.userId, soldadoRole.id, csrf);
   console.log(`${req.requester.username} promovido para [SD] Soldado`);
 }
+      }
     } catch (e) {
      console.log("Erro ao aceitar membros:");
 console.log("Status:", e.response?.status);
