@@ -175,7 +175,10 @@ async function run() {
         console.log(`Aceito: ${req.requester.username}`);
       }
     } catch (e) {
-      console.log("Erro ao aceitar membros:", e.message);
+     console.log("Erro ao aceitar membros:");
+console.log("Status:", e.response?.status);
+console.log("Data:", e.response?.data);
+console.log("Mensagem:", e.message);
     }
   }, 30000);
 
@@ -184,7 +187,10 @@ async function run() {
     try {
       await monitorAndEnforce(csrf);
     } catch (e) {
-      console.log("Erro ao monitorar:", e.message);
+      console.log("Erro ao monitorar:");
+console.log("Status:", e.response?.status);
+console.log("Data:", e.response?.data);
+console.log("Mensagem:", e.message);
     }
   }, 120000);
 }
