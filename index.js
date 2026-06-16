@@ -1,6 +1,7 @@
 const axios = require("axios");
 const express = require("express");
 const app = express();
+const PANEL_PASSWORD = "7221";
 const COOKIE = process.env.ROBLOX_COOKIE;
 const GROUP_ID = 510091211;
 
@@ -214,7 +215,37 @@ app.get("/", (req, res) => {
       </head>
       <body style="font-family: Arial; text-align:center; margin-top:50px;">
         <h1>🪖 Painel do EB</h1>
-        <p>Painel em construção...</p>
+
+        <form action="/login" method="get">
+          <input
+            type="password"
+            name="password"
+            placeholder="Digite a senha"
+            style="padding:10px;"
+          >
+          <br><br>
+          <button type="submit">Entrar</button>
+        </form>
+      </body>
+    </html>
+  `);
+});
+app.get("/login", (req, res) => {
+  if (req.query.password !== PANEL_PASSWORD) {
+    return res.send(`
+      <h1>❌ Senha incorreta</h1>
+      <a href="/">Voltar</a>
+    `);
+  }
+
+  res.send(`
+    <html>
+      <head>
+        <title>Painel do EB</title>
+      </head>
+      <body style="font-family: Arial; text-align:center; margin-top:50px;">
+        <h1>🪖 Painel do EB</h1>
+        <p>Login realizado com sucesso! ✅</p>
       </body>
     </html>
   `);
