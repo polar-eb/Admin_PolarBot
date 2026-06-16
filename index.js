@@ -276,7 +276,7 @@ app.get("/login", (req, res) => {
 </body>
 </html>
 `);
-  
+  });
 app.listen(process.env.PORT || 3000, () => {
   console.log("Painel online!");
 });
