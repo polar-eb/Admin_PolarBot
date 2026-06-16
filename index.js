@@ -206,8 +206,20 @@ console.log("Mensagem:", e.message);
 
 run();
 
-const http = require("http");
-http.createServer((req, res) => {
-  res.write("Bot online!");
-  res.end();
-}).listen(process.env.PORT || 3000);
+app.get("/", (req, res) => {
+  res.send(`
+    <html>
+      <head>
+        <title>Painel do EB</title>
+      </head>
+      <body style="font-family: Arial; text-align:center; margin-top:50px;">
+        <h1>🪖 Painel do EB</h1>
+        <p>Painel em construção...</p>
+      </body>
+    </html>
+  `);
+});
+
+app.listen(process.env.PORT || 3000, () => {
+  console.log("Painel online!");
+});
