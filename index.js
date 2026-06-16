@@ -173,7 +173,14 @@ async function run() {
       for (const req of pending) {
         await acceptMember(req.requester.userId, csrf);
         console.log(`Aceito: ${req.requester.username}`);
-      }
+        // Promover para Soldado
+const roles = await getRoles();
+const soldadoRole = roles.find(r => r.rank === 2);
+
+if (soldadoRole) {
+  await setUserRank(req.requester.userId, soldadoRole.id, csrf);
+  console.log(`${req.requester.username} promovido para [SD] Soldado`);
+}
     } catch (e) {
      console.log("Erro ao aceitar membros:");
 console.log("Status:", e.response?.status);
