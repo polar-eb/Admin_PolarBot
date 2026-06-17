@@ -249,14 +249,16 @@ app.get("/login", (req, res) => {
 
 <h1>🪖 Sistema de Eventos EB</h1>
 
-<form>
+<form action="/adicionar" method="get">
   <p>Jogador:</p>
 
   <input
-    type="text"
-    placeholder="Digite o nome do jogador"
-    style="padding:10px;"
-  >
+  type="text"
+  name="jogador"
+  placeholder="Digite o nome do jogador"
+  style="padding:10px;"
+  autofocus
+>
 
   <br><br>
 
@@ -278,6 +280,21 @@ app.get("/login", (req, res) => {
 </html>
 `);
   });
+
+app.get("/adicionar", (req, res) => {
+  const jogador = req.query.jogador;
+
+  if (jogador && jogador.trim() !== "") {
+    participantesEvento.push(jogador.trim());
+    console.log(`Adicionado ao evento: ${jogador}`);
+  }
+
+  res.send(`
+    <h2>✅ ${jogador} adicionado!</h2>
+    <a href="/login?password=${PANEL_PASSWORD}">Voltar ao painel</a>
+  `);
+});
+
 app.listen(process.env.PORT || 3000, () => {
   console.log("Painel online!");
 });
