@@ -47,6 +47,7 @@ const RANKS = [
 ];
 
 const promotionLog = {};
+let participantesEvento = [];
 
 function getWeekKey() {
   const now = new Date();
