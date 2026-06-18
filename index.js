@@ -172,7 +172,8 @@ async function run() {
   // Aceitar membros pendentes a cada 30 segundos
   setInterval(async () => {
     try {
-      const pending = await getPendingMembers(csrf);
+      const csrf = await getCsrfToken();
+const pending = await getPendingMembers(csrf);
       for (const req of pending) {
         await acceptMember(req.requester.userId, csrf);
         console.log(`Aceito: ${req.requester.username}`);
@@ -206,6 +207,17 @@ console.log("Mensagem:", e.message);
   }, 120000);
 }
 
+async function getUserId(username) {
+  const res = await axios.post(
+    "https://users.roblox.com/v1/usernames/users",
+    {
+      usernames: [username],
+      excludeBannedUsers: true
+    }
+  );
+
+  return res.data.data[0]?.id;
+}
 run();
 
 app.get("/", (req, res) => {
@@ -262,6 +274,17 @@ app.get("/login", (req, res) => {
 
   <br><br>
 
+<p>Patentes para promover:</p>
+
+<input
+  type="number"
+  name="quantidade"
+  value="1"
+  min="1"
+  max="20"
+  style="padding:10px;"
+>
+
   <button type="submit">Enviar</button>
 </form>
 
@@ -293,6 +316,58 @@ app.get("/adicionar", (req, res) => {
     <h2>✅ ${jogador} adicionado!</h2>
     <a href="/login?password=${PANEL_PASSWORD}">Voltar ao painel</a>
   `);
+});
+
+app.get("/promoverEvento", async (req, res) => {
+  try {
+    const quantidade = parseInt(req.query.quantidade) || 1;
+
+    const csrf = await getCsrfToken();
+    const roles = await getRoles();
+    const members = await getGroupMembers();
+
+    for (const nome of participantesEvento) {
+
+      const userId = await getUserId(nome);
+
+      if (!userId) continue;
+
+      const member = members.find(
+        m => m.user.userId === userId
+      );
+
+      if (!member) continue;
+
+      const rankAtual = member.role.rank;
+
+      const rankDesejado = rankAtual + quantidade;
+
+      let novaRole = roles.find(
+        r => r.rank === rankDesejado
+      );
+
+      if (!novaRole) {
+        novaRole = roles
+          .filter(r => r.rank > rankDesejado)
+          .sort((a, b) => a.rank - b.rank)[0];
+      }
+
+      if (!novaRole) continue;
+
+      await setUserRank(userId, novaRole.id, csrf);
+
+      console.log(
+        `${nome}: ${rankAtual} -> ${novaRole.rank}`
+      );
+    }
+
+    participantesEvento = [];
+
+    res.send("✅ Evento finalizado! Todos promovidos.");
+  } catch (e) {
+    console.log(e);
+    res.send("❌ Erro ao promover.");
+  }
 });
 
 app.listen(process.env.PORT || 3000, () => {
