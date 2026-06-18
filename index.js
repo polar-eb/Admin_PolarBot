@@ -73,11 +73,16 @@ async function getGroupMembers() {
   return res.data.data || [];
 }
 
-async function getPendingMembers(csrf) {
+async function getPendingMembers() {
   const res = await axios.get(
     `https://groups.roblox.com/v1/groups/${GROUP_ID}/join-requests?limit=100`,
-    { headers: { Cookie: `.ROBLOSECURITY=${COOKIE}`, "X-CSRF-Token": csrf } }
+    {
+      headers: {
+        Cookie: `.ROBLOSECURITY=${COOKIE}`
+      }
+    }
   );
+
   return res.data.data || [];
 }
 
